@@ -1,80 +1,92 @@
 #include <iostream>
-#include<string.h>
-#include  <assert.h>
+#include <string.h>
+#include <assert.h>
+#include <stdio.h>
+
 #include "../include/flipIt.h"
 #include "../include/grid.h"
+
+#define TAB_SIZE 3
 
 using namespace std;
 typedef void (*callback_function)(void);
 
 
-void expect(int left, int right)
-{
-	if(left != right)
-	{
-		cout << "Expected " << left << " to equal " << right << endl;
-	}
-}
+
+static int tab_depth = 0;
 
 string _get_tabs(int depth)
 {
 	string str("");
-	return str.insert(0, depth, '\t');
+	return str.insert(0, depth * TAB_SIZE, ' ');
 }
 
-void it(string description, callback_function cb)
+void expect(string description, int left, int right)
 {
-	static int tab_depth = 0;
-	string tabs = _get_tabs(tab_depth);
-	cout << tabs << description << endl;
-	if (cb)
+	cout << _get_tabs(tab_depth) << description << "\n";
+	if(left != right)
 	{
-		it_depth++;
-		cb();
+		cout << _get_tabs(tab_depth + 1) << "FAIL - Assertion Error: Expected " << left << " to equal " << right << endl;
 	}
-
-	it_depth--;
-	return;
+	else
+	{
+		cout << _get_tabs(tab_depth + 1) << "PASS";
+	}
 }
 
+void describe(string description, callback_function cb)
+{
+	cout << _get_tabs(tab_depth) << description << endl;
+	tab_depth++;
+	if (cb)	cb();
+	tab_depth--;
+}
+void (&it)(string description, callback_function cb) = describe;
 
-int main() {
+
+
+
+
+
+
+
+int main()
+{
 	bool passing = true;
 
-    FlipIt game( 3, 4, 4, 99, FlipIt::cross_, true);
-	/**
-	 * Testing FlipIt::numRows() and FlipIt::numCols() after construction
-	 */
-	passing &= 		3 == 				game.numRows();
-	passing &= 		4 == 				game.numCols();
 
 	/**
  	* Testing getNeighborIndex(int, int, int)
 	*/
-	Grid g(3, 4);
 
-	it("Test 1", []()
-	{
-		it("Test 2", []()
-		{
-			it("Test 3", []()
-			{
+	describe("FlipIt class tests", []() {
+		describe("FlipIt constructor tests", []() {
+			it("should have 3 rows and 4 columns", []() {
+				FlipIt game( 3, 4, 4, 99, FlipIt::cross_, true);
+				expect("game.numRows()", 3, game.numRows());
+				expect("game.numCols()", 4, game.numCols());
+			});
+		});
+		describe("Grid constructor tests", []() {
+			it("testing wrapped visit from all possible directions to index zero.", [](){
+				Grid g(3, 4);
+				expect( "S:0  (XX)",0, g.getWrappedNeighborIndex( 0,  0,  0 ));
+				expect( "S:1  ( W)",0, g.getWrappedNeighborIndex( 1, -1,  0 ));
+				expect( "S:3  ( E)",0, g.getWrappedNeighborIndex( 3,  1,  0 ));
+				expect( "S:4  (N )",0, g.getWrappedNeighborIndex( 4,  0, -1 ));
+				expect( "S:5  (NW)",0, g.getWrappedNeighborIndex( 5, -1, -1 ));
+				expect( "S:7  (NE)",0, g.getWrappedNeighborIndex( 7,  1, -1 ));
+				expect( "S:8  (S )",0, g.getWrappedNeighborIndex( 8,  0,  1 ));
+				expect( "S:9  (SW)",0, g.getWrappedNeighborIndex( 9, -1,  1 ));
+				expect( "S:11 (SE)",0, g.getWrappedNeighborIndex( 11, 1,  1 ));
 			});
 		});
 	});
-	//expect(0, g.getWrappedNeighborIndex( 0,  0,  0 ));
-	//expect(0, g.getWrappedNeighborIndex( 1, -1,  0 ));
-	//expect(0, g.getWrappedNeighborIndex( 3,  1,  0 ));
-	//expect(0, g.getWrappedNeighborIndex( 4,  0, -1 ));
-	//expect(0, g.getWrappedNeighborIndex( 5, -1, -1 ));
-	//expect(0, g.getWrappedNeighborIndex( 7,  1, -1 ));
-	//expect(0, g.getWrappedNeighborIndex( 8,  0,  1 ));
-	//expect(0, g.getWrappedNeighborIndex( 9, -1,  1 ));
-	//expect(0, g.getWrappedNeighborIndex( 11, 1,  1 ));
+	//
 
 
-	game.click(2, 2);
-	passing &=		FlipIt::clear_ == 	game.fetch(2,2);
+	//game.click(2, 2);
+	//passing &=		FlipIt::clear_ == 	game.fetch(2,2);
 
 	if (passing) {
 		cout << "SUCCESS\n";
