@@ -94,7 +94,7 @@ int main()
 	}
 	else {
 		cout << "SUCCESS\n";
-		return 1;
+		return 0;
 	}
 }
 
