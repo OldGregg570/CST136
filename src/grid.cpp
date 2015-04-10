@@ -90,9 +90,7 @@ int Grid::getWrappedNeighborIndex(int i, int rel_x, int rel_y) const
   int retVal;
 
   // Check to make sure 0 < i < grid_size
-  if (i >= w * h or i < 0)
-    return -1;
-
+  assert(i >= w * h or i < 0);
 
   if ((x + rel_x) >= w)
     x -= (w - 1);

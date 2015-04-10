@@ -42,7 +42,7 @@ class  FlipIt
 	Grid        m_grid;
     Pattern     m_pattern;
     bool        m_wrap;
-    void        toggleSquare ( int row, int col );
+    void        toggleCell ( int row, int col );
     int*        getPatternMatrix();
 };
 
