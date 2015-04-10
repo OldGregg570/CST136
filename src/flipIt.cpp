@@ -122,13 +122,13 @@ void FlipIt::toggleCell(int row, int col)
  *********************************************************************/
 void FlipIt::click(int row, int col)
 {
-	int* pattern = getPatternMatrix();
-	int w = m_grid.numCols();
-	int h = m_grid.numRows();
-
-	for(int x = 0; x < w; x++)
-		for(int y = 0; y < h; y++)
-			m_grid.getWrappedNeighborIndex(row + col * w, grid_x, grid_y);
+//	int* pattern = getPatternMatrix();
+//	int w = m_grid.numCols();
+//	int h = m_grid.numRows();
+//
+//	for(int x = 0; x < w; x++)
+//		for(int y = 0; y < h; y++)
+//			m_grid.getWrappedNeighborIndex(row + col * w, grid_x, grid_y);
 
 	toggleCell(row, col);
 }
