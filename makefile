@@ -3,11 +3,12 @@ CFLAGS  = -g -Wall -std=c++0x
 
 SRC = ./src/grid.cpp ./include/grid.h ./src/flipIt.cpp ./include/flipIt.h ./src/flipitDisplay.cpp ./include/flipitDisplay.h
 
-start: all
-	./bin/flipit
 
 all: ./bin/flipitDisplay.o ./bin/flipIt.o
 	$(CC) $(CFLAGS) -o ./bin/flipit ./src/flipitMain.cpp $(SRC)
+
+start: all
+	./bin/flipit
 
 test: ./bin/flipitDisplay.o ./bin/flipIt.o ./bin/grid.o
 	$(CC) $(CFLAGS) -o ./bin/test ./test/flipit_test.cpp $(SRC)
