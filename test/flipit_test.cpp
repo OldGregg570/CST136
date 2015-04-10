@@ -48,7 +48,6 @@ void (&it)(string description, callback_function cb) = describe;
 
 int main()
 {
-	int SEED = 4;
 	/**
  	* Testing getNeighborIndex(int, int, int)
 	*/
@@ -82,14 +81,14 @@ int main()
 	describe("FlipIt class tests", []() {
 		describe("FlipIt constructor/getter tests", []() {
 			it("should have 3 rows and 4 columns", []() {
-				FlipIt game( 3, 4, SEED, 1, FlipIt::cross_, true);
+				FlipIt game( 3, 4, 4, 1, FlipIt::cross_, true);
 				expect(3, game.numRows());
 				expect(4, game.numCols());
 			});
 		});
 		describe("click test", [](){
 			it("", [](){
-				FlipIt game( 3, 4, SEED, 1, FlipIt::cross_, true);
+				FlipIt game( 3, 4, 4, 1, FlipIt::cross_, true);
 
 			});
 		});
