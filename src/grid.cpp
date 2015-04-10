@@ -13,7 +13,7 @@
 
 
 #include  "../include/grid.h"
-#include  <assert.h>
+#include <assert.h>
 #include  <stdlib.h>
 
 
@@ -76,31 +76,41 @@ bool  Grid::fetch( int  row, int  col )  const
   return  m_cells[ index(row, col) ];
 }
 
-int Grid::getWrappedNeighborIndex(int home, int rel_x, int rel_y) const
+//
+// Returns the wrapped neighbor index based on a relative x value and
+// a relative y value in -1, 0, or 1
+//
+int Grid::getWrappedNeighborIndex(int i, int rel_x, int rel_y) const
 {
   int w = numCols();
   int h = numRows();
-  int x = 0;
-  int y = 0;
 
-  if ((home + rel_x) % w == 0)
-  {
-    x += (w - 1);
-  }
-  if ((home + rel_x) % w == w)
-  {
+  int x = i % w;
+  int y = i / w;
+  int retVal;
+
+  // Check to make sure 0 < i < grid_size
+  if (i >= w * h or i < 0)
+    return -1;
+
+
+  if ((x + rel_x) >= w)
     x -= (w - 1);
-  }
-  if ((home + rel_y) % h == 0)
-  {
-    y += (h - 1);
-  }
-  if ((home + rel_y) % h == h)
-  {
-    y -= (h - 1);
-  }
+  else if ((x + rel_x) < 0)
+    x += (w - 1);
+  else
+    x += rel_x;
 
-  return x + (y * w);
+  if ((y + rel_y) >= h)
+    y -= (h - 1);
+  else if ((y + rel_y) < 0)
+    y += (h - 1);
+  else
+    y += rel_y;
+
+  retVal = index(y, x);
+  bool outOfRange = retVal < 0 || retVal >= w * h;
+  return outOfRange ? -1 : retVal;
 }
 
 //

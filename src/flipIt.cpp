@@ -20,13 +20,11 @@
 #include  <string.h>
 #include  <limits.h>
 
-
 int PATTERN_CROSS[9]	= {0, 1, 0, 1, 1, 1, 0, 1, 0};
 int PATTERN_X[9] 		= {1, 0, 1, 0, 1, 0, 1, 0, 1};
 int PATTERN_SQUARE[9] 	= {1, 1, 1, 1, 1, 1, 1, 1, 1};
 int PATTERN_HOLLOW[9] 	= {1, 1, 1, 1, 0, 1, 1, 1, 1};
 int PATTERN_CORNERS[9]	= {1, 0, 1, 0, 0, 0, 1, 0, 1};
-
 
 using  namespace  std;
 
@@ -69,7 +67,7 @@ FlipIt::FlipIt(int rows, int cols, int seed, int complexity, FlipIt::Pattern pat
 {
 	srand(seed);
 	for (int _ = 0; _ < complexity; _++)
-		this->click(rand() % rows, rand() % cols);
+		this->click(rand() % (rows - 1), rand() % (cols - 1));
 }
 
 int FlipIt::numRows() const
