@@ -76,6 +76,32 @@ bool  Grid::fetch( int  row, int  col )  const
   return  m_cells[ index(row, col) ];
 }
 
+int Grid::getWrappedNeighborIndex(int home, int rel_x, int rel_y) const
+{
+  int w = numCols();
+  int h = numRows();
+  int x = 0;
+  int y = 0;
+
+  if ((home + rel_x) % w == 0)
+  {
+    x += (w - 1);
+  }
+  if ((home + rel_x) % w == w)
+  {
+    x -= (w - 1);
+  }
+  if ((home + rel_y) % h == 0)
+  {
+    y += (h - 1);
+  }
+  if ((home + rel_y) % h == h)
+  {
+    y -= (h - 1);
+  }
+
+  return x + (y * w);
+}
 
 //
 // Convert row/col values into an array index
@@ -135,3 +161,4 @@ void  Grid::copy( const Grid  &rhs )
   for( int  idx = 0;  idx < m_numRows * m_numCols;  ++idx )
     m_cells[idx]  =  rhs.m_cells[idx];
 }
+

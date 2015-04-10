@@ -1,5 +1,3 @@
-
-
 //
 // Assignment  :  #1
 // Class       :  CST 136
@@ -17,7 +15,7 @@
 #ifndef  flipitDisplay_H
 #define  flipitDisplay_H
 
-#include  "./flipitEngine.h"
+#include  "./flipIt.h"
 
 
 extern void  display( const FlipIt  &game );

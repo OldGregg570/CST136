@@ -40,6 +40,10 @@ class  Grid
       // call to this function.
       //
 
+    int getWrappedNeighborIndex(int home, int rel_x, int rel_y) const;
+      //
+      // Return the index of a neighbor at a relative position
+      //
 
     int  numRows()  const  {  return  m_numRows;  }
       //
