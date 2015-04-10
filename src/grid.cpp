@@ -78,7 +78,7 @@ bool  Grid::fetch( int  row, int  col )  const
 
 //
 // Returns the wrapped neighbor index based on a relative x value and
-// a relative y value in -1, 0, or 1
+// a relative y value -1, 0, or 1
 //
 int Grid::getWrappedNeighborIndex(int i, int rel_x, int rel_y) const
 {
@@ -90,7 +90,9 @@ int Grid::getWrappedNeighborIndex(int i, int rel_x, int rel_y) const
   int retVal;
 
   // Check to make sure 0 < i < grid_size
-  assert(i >= w * h or i < 0);
+  if (i >= w * h or i < 0)
+    return -1;
+
 
   if ((x + rel_x) >= w)
     x -= (w - 1);
