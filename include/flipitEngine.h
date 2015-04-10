@@ -33,8 +33,8 @@ class  FlipIt
             Pattern  pattern,
             bool     wrap );
 
-    int  numRows()  const ;
-    int  numCols()  const ;
+    int  numRows()  const;
+    int  numCols()  const;
 
     void  click( int  row, int  col );
 

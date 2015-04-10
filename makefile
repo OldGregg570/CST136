@@ -10,6 +10,13 @@ sample_main: ./bin/grid.o
 all: ./bin/flipitDisplay.o ./bin/flipitEngine.o
 	$(CC) $(CFLAGS) -o ./flipit.exe ./src/flipit.cpp $(SRC)
 
+	
+test: ./bin/flipitDisplay.o ./bin/flipitEngine.o
+	$(CC) $(CFLAGS) -o ./test.exe ./test/flipit_test.cpp $(SRC)
+	
+
+	
+	
 ./bin/flipitDisplay.o: ./src/flipitDisplay.cpp ./include/flipitDisplay.h
 	$(CC) $(CFLAGS) -c ./src/flipitDisplay.cpp ./include/flipitDisplay.h -o ./bin/flipitDisplay.o
 

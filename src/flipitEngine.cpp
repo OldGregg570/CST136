@@ -57,5 +57,12 @@ bool FlipIt::done() const
 
 void FlipIt::click(int row, int col)
 {
-	cout << "click";
+	if (this->m_grid.fetch(row, col))
+	{
+		this->m_grid.clear(row, col);
+	}
+	else
+	{
+		this->m_grid.set(row,col);
+	}
 }
