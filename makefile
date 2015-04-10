@@ -26,4 +26,4 @@ gridSample: ./bin/grid.o ./bin/gridSample.o
 
 clean: 
 	rm ./bin/*.o
-	
+	rm ./bin/*.exe
