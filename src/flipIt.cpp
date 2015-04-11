@@ -28,14 +28,13 @@ int DIRS[][3] 		= {{-1, -1}, {0, -1}, {1, -1},
 					   {-1,  0}, {0,  0}, {1,  0},
 					   {-1,  1}, {0,  1}, {1,  1}};
 
+
 /**********************************************************************
  * Constructor. Initializes board by clicking it in complexity random
  * cells. Also initiializes grid, pattern, and wrap members.
  *********************************************************************/
-FlipIt::FlipIt(int rows,
-			   int cols,
-			   int seed,
-			   int complexity,
+FlipIt::FlipIt(int rows, int cols,
+			   int seed, int complexity,
 			   FlipIt::Pattern pattern,
 			   bool wrap)  :
 		m_grid(rows, cols),
@@ -62,6 +61,7 @@ bool FlipIt::done() const {
 	return retVal;
 }
 
+
 /**********************************************************************
  * Toggles the on/off state of a cell
  *********************************************************************/
@@ -70,6 +70,7 @@ void FlipIt::toggleCell(int row, int col) {
 	if (!m_grid.fetch(row, col)) 	m_grid.set(row, col);
 	else 							m_grid.clear(row, col);
 }
+
 
 /**********************************************************************
  * Returns wrapped index
@@ -89,6 +90,7 @@ int FlipIt::_neighbor(int d, int p, int v) const {
 
 }
 
+
 /**********************************************************************
  * Accepts an index to be converted to a x value. Returns the x value
  * of the neighbor index in direction dx
@@ -97,6 +99,7 @@ int FlipIt::neighbor_x(int i, int dx) const {
 	return _neighbor(dx, i % numCols(), numCols());
 }
 
+
 /**********************************************************************
  * Accepts an index to be converted to a y value. Returns the y value
  * of the neighbor index in direction dy
@@ -104,6 +107,7 @@ int FlipIt::neighbor_x(int i, int dx) const {
 int FlipIt::neighbor_y(int i, int dy) const {
 	return _neighbor(dy, i / numCols(), numRows());
 }
+
 
 /**********************************************************************
  * Apply a toggle of all cells in the pattern at the specified center
@@ -120,6 +124,7 @@ void FlipIt::click(int row, int col) {
 		}
 	}
 }
+
 
 /**********************************************************************
  * Return the 3x3 binary matrix for the specified pattern
