@@ -3,6 +3,9 @@
 #include <assert.h>
 #include <stdio.h>
 
+// Only way to test private methods
+#define private public
+
 #include "../include/flipIt.h"
 #include "../include/grid.h"
 
@@ -23,9 +26,9 @@ string _get_tabs(int depth) {
 void expect(int left, int right) {
 	bool pass = left == right;
 	if(pass)
-		cout << _get_tabs(tab_depth + 1) << "PASS - Assertion Success\n";
+		cout << _get_tabs(tab_depth + 1) << "PASS\n";
 	else
-		cout << _get_tabs(tab_depth + 1) << "FAIL - Assertion Error: Expected " << left << " to equal " << right << endl;
+		cout << _get_tabs(tab_depth + 1) << "FAIL - Expected " << left << " to equal " << right << endl;
 
 	g_passing &= pass;
 }
@@ -51,44 +54,65 @@ int main()
 	/**
  	* Testing getNeighborIndex(int, int, int)
 	*/
-	describe("Grid constructor tests", []() {
-		it("testing wrapped visit from all possible directions to index zero.", []() {
-			Grid g(3, 4);
-			expect(0, g.getWrappedNeighborIndex( 0,  0,  0 ));
-			expect(0, g.getWrappedNeighborIndex( 1, -1,  0 ));
-			expect(0, g.getWrappedNeighborIndex( 3,  1,  0 ));
-			expect(0, g.getWrappedNeighborIndex( 4,  0, -1 ));
-			expect(0, g.getWrappedNeighborIndex( 5, -1, -1 ));
-			expect(0, g.getWrappedNeighborIndex( 7,  1, -1 ));
-			expect(0, g.getWrappedNeighborIndex( 8,  0,  1 ));
-			expect(0, g.getWrappedNeighborIndex( 9, -1,  1 ));
-			expect(0, g.getWrappedNeighborIndex( 11, 1,  1 ));
-		});
-		it("testing other cases", []() {
-			Grid g(10, 10);
-			expect(4, g.getWrappedNeighborIndex(14, 0, -1));
-			expect(5, g.getWrappedNeighborIndex(95, 0, 1));
-			expect(6, g.getWrappedNeighborIndex(5, 1, 0));
-		});
-		it("bounds testing", []() {
-			Grid g(2, 2);
-			expect(-1, g.getWrappedNeighborIndex(-1, 0, 0));
-			expect(-1, g.getWrappedNeighborIndex(-1, 1, 0));
-			expect(-1, g.getWrappedNeighborIndex(-2, 0, 0));
-			expect(-1, g.getWrappedNeighborIndex(4, 0, 0));
-		});
-	});
+
 	describe("FlipIt class tests", []() {
 		describe("FlipIt constructor/getter tests", []() {
-			it("should have 3 rows and 4 columns", []() {
-				FlipIt game( 3, 4, 4, 1, FlipIt::cross_, true);
+			it("should have 3 rows and 3 columns", []() {
+				FlipIt game( 3, 3, 0, 1, FlipIt::cross_, true);
+
 				expect(3, game.numRows());
-				expect(4, game.numCols());
+				expect(3, game.numCols());
+				expect(FlipIt::solid_, game.fetch(0, 0));
+				expect(FlipIt::solid_, game.fetch(1, 0));
+				expect(FlipIt::solid_, game.fetch(2, 0));
+				expect(FlipIt::clear_, game.fetch(0, 1));
+				expect(FlipIt::solid_, game.fetch(1, 1));
+				expect(FlipIt::clear_, game.fetch(2, 1));
+				expect(FlipIt::clear_, game.fetch(0, 2));
+				expect(FlipIt::solid_, game.fetch(1, 2));
+				expect(FlipIt::clear_, game.fetch(2, 2));
 			});
 		});
 		describe("click test", [](){
-			it("", [](){
+			it("pattern: cross", [](){
 				FlipIt game( 3, 4, 4, 1, FlipIt::cross_, true);
+				game.click(1, 2);
+				expect(FlipIt::solid_, game.fetch(0, 0));
+				expect(FlipIt::clear_, game.fetch(0, 3));
+				expect(FlipIt::solid_, game.fetch(2, 0));
+				expect(FlipIt::clear_, game.fetch(2, 3));
+			});
+			it("pattern: x", [](){
+				FlipIt game( 3, 4, 4, 1, FlipIt::x_, true);
+				game.click(1, 2);
+				expect(FlipIt::clear_, game.fetch(0, 0));
+				expect(FlipIt::clear_, game.fetch(0, 3));
+				expect(FlipIt::clear_, game.fetch(2, 0));
+				expect(FlipIt::clear_, game.fetch(2, 3));
+			});
+			it("pattern: square", [](){
+				FlipIt game( 3, 4, 4, 1, FlipIt::square_, true);
+				game.click(1, 2);
+				expect(FlipIt::solid_, game.fetch(0, 0));
+				expect(FlipIt::clear_, game.fetch(0, 3));
+				expect(FlipIt::solid_, game.fetch(2, 0));
+				expect(FlipIt::clear_, game.fetch(2, 3));
+			});
+			it("pattern: hollow", [](){
+				FlipIt game( 3, 4, 4, 1, FlipIt::hollowSquare_, true);
+				game.click(1, 2);
+				expect(FlipIt::solid_, game.fetch(0, 0));
+				expect(FlipIt::clear_, game.fetch(0, 3));
+				expect(FlipIt::solid_, game.fetch(2, 0));
+				expect(FlipIt::clear_, game.fetch(2, 3));
+			});
+			it("pattern: corners", [](){
+				FlipIt game( 3, 4, 4, 1, FlipIt::corners_, true);
+				game.click(1, 2);
+				expect(FlipIt::clear_, game.fetch(0, 0));
+				expect(FlipIt::clear_, game.fetch(0, 3));
+				expect(FlipIt::clear_, game.fetch(2, 0));
+				expect(FlipIt::clear_, game.fetch(2, 3));
 			});
 		});
 		describe("fetch test", [](){
@@ -110,6 +134,50 @@ int main()
 				expect(true, game.done());
 				game.click(2, 2);
 				expect(false, game.done());
+			});
+		});
+		describe("getWrappedNeighbor tests", []() {
+			it("testing wrapped visit from all possible directions to index zero.", []() {
+				FlipIt g( 3, 4, 4, 1, FlipIt::cross_, true);
+				expect(0, g.getWrappedNeighbor( 0,  0,  0 ));
+				expect(0, g.getWrappedNeighbor( 1, -1,  0 ));
+				expect(0, g.getWrappedNeighbor( 3,  1,  0 ));
+				expect(0, g.getWrappedNeighbor( 4,  0, -1 ));
+				expect(0, g.getWrappedNeighbor( 5, -1, -1 ));
+				expect(0, g.getWrappedNeighbor( 7,  1, -1 ));
+				expect(0, g.getWrappedNeighbor( 8,  0,  1 ));
+				expect(0, g.getWrappedNeighbor( 9, -1,  1 ));
+				expect(0, g.getWrappedNeighbor( 11, 1,  1 ));
+			});
+			it("testing 1D getWrapped_ (no actual wrapping", []() {
+				FlipIt g( 3, 3, 4, 1, FlipIt::corners_, true);
+				expect(1, g.getWrapped_x(7, 0));
+				expect(1, g.getWrapped_x(3, 1));
+				expect(1, g.getWrapped_x(5, -1));
+				expect(1, g.getWrapped_x(1, 0));
+
+				expect(1, g.getWrapped_y(7, -1));
+				expect(1, g.getWrapped_y(3, 0));
+				expect(1, g.getWrapped_y(5, 0));
+				expect(1, g.getWrapped_y(1, 1));
+
+			});
+			it("testing 1D getWrapped_ (with wrapping", []() {
+				FlipIt g( 3, 3, 4, 1, FlipIt::corners_, true);
+				// TODO
+			});
+			it("testing other cases", []() {
+				FlipIt g( 10, 10, 4, 1, FlipIt::cross_, true);
+				expect(4, g.getWrappedNeighbor(14, 0, -1));
+				expect(5, g.getWrappedNeighbor(95, 0, 1));
+				expect(6, g.getWrappedNeighbor(5, 1, 0));
+			});
+			it("bounds testing", []() {
+//				FlipIt g( 2, 2, 4, 1, FlipIt::cross_, true);
+//				expect(-1, g.getWrappedNeighbor(-1, 0, 0));
+//				expect(-1, g.getWrappedNeighbor(-1, 1, 0));
+//				expect(-1, g.getWrappedNeighbor(-2, 0, 0));
+//				expect(-1, g.getWrappedNeighbor(4, 0, 0));
 			});
 		});
 	});

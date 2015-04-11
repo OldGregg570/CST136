@@ -30,7 +30,6 @@ class  Grid
       // initialized to the cleared state by this function.
       //
 
-
     ~Grid()  { cleanup(); }
       //
       // Destructor
@@ -38,11 +37,6 @@ class  Grid
       // Cleans up the dynamic memory used by this class.
       // This is called automatically. Do not make an explicit
       // call to this function.
-      //
-
-    int getWrappedNeighborIndex(int home, int rel_x, int rel_y) const;
-      //
-      // Return the index of a neighbor at a relative position
       //
 
     int  numRows()  const  {  return  m_numRows;  }

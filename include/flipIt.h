@@ -29,21 +29,25 @@ class  FlipIt
             Pattern  pattern,
             bool     wrap );
 
-    int  numRows()  const;
-    int  numCols()  const;
+    int  numRows() const { return m_grid.numRows(); };
+    int  numCols() const { return m_grid.numCols(); };
 
     void  click( int  row, int  col );
 
-    Color   fetch( int  row, int  col ) const;
+    Color   fetch(int row, int col) const { return (FlipIt::Color) m_grid.fetch(row, col); };
 
     bool    done() const;
 
   private:
-	Grid        m_grid;
-    Pattern     m_pattern;
-    bool        m_wrap;
-    void        toggleCell ( int row, int col );
-    int*        getPatternMatrix();
+    const Pattern m_pattern;
+    Grid    m_grid;
+    bool    m_wrap;
+    void    toggleCell ( int row, int col );
+    int     getWrappedNeighbor(int home, int dx, int dy) const;
+    int     getWrapped_x(int home, int dx) const;
+    int     getWrapped_y(int home, int dy) const;
+    int*    getDirectionList();
+
 };
 
 #endif

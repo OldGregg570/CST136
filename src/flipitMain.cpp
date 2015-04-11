@@ -25,7 +25,6 @@ using  namespace  std;
 
 typedef  pair<int, int>  RowCol;
 
-
 /******************************************************************************
  * Determine if the user wants to play again. Returns true if yes.
  *****************************************************************************/

@@ -171,7 +171,7 @@ following constraints:
   - no pointers or dynamic memory. You do not need either of these
     for this assignment and I do not want you to use them. If you don't
     know how to do something in this assignment without pointers or
-    dynamic memory, ask me for suggestions.
+    dynamic memory, ask +me for suggestions.
 
     Note: the Grid class uses a pointer member variable and dynamic
     memory internally for it's implementation. But all of this is
