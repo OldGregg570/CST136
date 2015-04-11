@@ -1,15 +1,14 @@
-
-//
-// Assignment  :  #1
-// Class       :  CST 136
-//
-// Author      :  Andrew Bragg
-//
-// File        :  flipIt.h
-//
-//
-// Description :  Declarations for the FlipIt game class.
-//
+/**********************************************************************
+ * Assignment  :  #1
+ * Class       :  CST 136
+ *
+ * Author      :  Andrew Bragg
+ *
+ * File        :  flipIt.h
+ *
+ *
+ * Description :  Declarations for the FlipIt game class.
+ *********************************************************************/
 
 #ifndef  flipit_H
 #define  flipit_H
@@ -39,15 +38,15 @@ class  FlipIt
     bool    done() const;
 
   private:
+    Grid          m_grid;
     const Pattern m_pattern;
-    Grid    m_grid;
-    bool    m_wrap;
-    void    toggleCell ( int row, int col );
-    int     getWrappedNeighbor(int home, int dx, int dy) const;
-    int     getWrapped_x(int home, int dx) const;
-    int     getWrapped_y(int home, int dy) const;
-    int*    getDirectionList();
+    const bool    m_wrap;
 
+    void          toggleCell( int row, int col );
+    int           _neighbor(int delta, int value, int size) const;
+    int           neighbor_x(int home, int dx) const;
+    int           neighbor_y(int home, int dy) const;
+    int*          getPattern() const;
 };
 
 #endif
