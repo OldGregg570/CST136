@@ -1,4 +1,4 @@
-[![Build Status](https://drone.io/github.com/OldGregg570/CST136/status.png)](https://drone.io/github.com/OldGregg570/CST136/latest)
+Build status is now cached by github. It may not be up to date: [![Build Status](https://drone.io/github.com/OldGregg570/CST136/status.png)](https://drone.io/github.com/OldGregg570/CST136/latest)
 # CST136
 Git repo for OOP class assignments
 

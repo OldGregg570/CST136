@@ -37,15 +37,15 @@ void describe(string description, callback_function cb) {
 	tab_depth--;
 }
 
+// TODO: Make these functions the same for now
 void (&it)(string description, callback_function cb) = describe;
 
 // TODO: beforeEach
 
-
-
-
-
-
+/**
+ * Main testing suite. Tests all classes. Runs other test suites
+ * in larger projects
+ */
 int main()
 {
 	/**
@@ -89,7 +89,27 @@ int main()
 		describe("click test", [](){
 			it("", [](){
 				FlipIt game( 3, 4, 4, 1, FlipIt::cross_, true);
-
+			});
+		});
+		describe("fetch test", [](){
+			it("", [](){
+				FlipIt game( 3, 4, 4, 1, FlipIt::cross_, true);
+			});
+		});
+		describe("done test", [](){
+			it("testing done true and false", [](){
+				FlipIt game( 3, 4, 4, 1, FlipIt::cross_, true);
+				expect(false, game.done());
+				game.click(1, 0);
+				expect(true, game.done());
+			});
+			it("toggle different cell after done returns true", [](){
+				FlipIt game( 3, 4, 4, 1, FlipIt::cross_, true);
+				expect(false, game.done());
+				game.click(1, 0);
+				expect(true, game.done());
+				game.click(2, 2);
+				expect(false, game.done());
 			});
 		});
 	});

@@ -57,15 +57,25 @@ int* FlipIt::getPatternMatrix()
 /**********************************************************************
  * Constructor
  *********************************************************************/
-FlipIt::FlipIt(int rows, int cols, int seed, int complexity, FlipIt::Pattern pattern, bool wrap)  : 
+FlipIt::FlipIt(int rows,
+			   int cols,
+			   int seed,
+			   int complexity,
+			   FlipIt::Pattern pattern,
+			   bool wrap)  :
+
+// Member initialization
 	m_grid(rows, cols),
 	m_pattern(pattern),
 	m_wrap(wrap)
+
+// Constructor
 {
 	srand(seed);
 	for (int _ = 0; _ < complexity; _++)
 		this->click(rand() % (rows - 1), rand() % (cols - 1));
 }
+
 /**********************************************************************
  * Return the number of rows in the grid
  *********************************************************************/
@@ -101,7 +111,7 @@ bool FlipIt::done() const
 
 	for (int x = 0; x < w; x++)
 		for (int y = 0; y < h; y++)
-			retVal &= m_grid.fetch(x, y);
+			retVal &= !((bool)m_grid.fetch(y, x));
 
 	return retVal;
 }
@@ -120,15 +130,18 @@ void FlipIt::toggleCell(int row, int col)
 /**********************************************************************
  * Apply a toggle of all cells in the pattern at the specified center
  *********************************************************************/
-void FlipIt::click(int row, int col)
-{
-//	int* pattern = getPatternMatrix();
-//	int w = m_grid.numCols();
-//	int h = m_grid.numRows();
-//
-//	for(int x = 0; x < w; x++)
-//		for(int y = 0; y < h; y++)
-//			m_grid.getWrappedNeighborIndex(row + col * w, grid_x, grid_y);
+void FlipIt::click(int row, int col) {
+	int *pattern = getPatternMatrix();
+	int w = m_grid.numCols();
+	int h = m_grid.numRows();
 
-	toggleCell(row, col);
+	for (int x = 0; x < w; x++) {
+		for (int y = 0; y < h; y++) {
+			if (pattern[x + (y * w)]) {
+				int i = m_grid.getWrappedNeighborIndex(col + row * w, y, x);
+				cout << "DEBUG";
+				toggleCell(i % w, i / w);
+			}
+		}
+	}
 }
