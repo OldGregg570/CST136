@@ -179,11 +179,11 @@ void FlipIt::click(int row, int col)
 			int home = col + (row * w);
 			dx = DIRECTIONS [i][_x];
 			dy = DIRECTIONS [i][_y];
-			int new_i = getWrappedNeighbor(home, dx, dy);
-			//int new_x = getWrapped_x(home, dx);
-			//int new_y = getWrapped_y(home, dy);
-			toggleCell(new_i / w, new_i % w);
-			//toggleCell(new_y, new_x);
+			//int new_i = getWrappedNeighbor(home, dx, dy);
+			int new_x = getWrapped_x(home, dx);
+			int new_y = getWrapped_y(home, dy);
+			//toggleCell(new_i / w, new_i % w);
+			toggleCell(new_y, new_x);
 		}
 	}
 }
