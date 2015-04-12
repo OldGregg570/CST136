@@ -1,12 +1,8 @@
 /**********************************************************************
  * Assignment  :  #1
  * Class       :  CST 136
- *
  * Author      :  Andrew Bragg
- *
  * File        :  flipIt.h
- *
- *
  * Description :  Declarations for the FlipIt game class.
  *********************************************************************/
 
@@ -42,7 +38,7 @@ class  FlipIt
     const Pattern m_pattern;
     const bool    m_wrap;
 
-    void          toggleCell( int row, int col );
+    void          toggleCell(int row, int col);
     int           _neighbor(int delta, int value, int size) const;
     int           neighbor_x(int home, int dx) const;
     int           neighbor_y(int home, int dy) const;

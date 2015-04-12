@@ -265,7 +265,7 @@ int  main(int argc, char* argv[])
     bool             wrap        =  getWrap();
 
     // Play the game
-    FlipIt  game( numRows, numCols, gameNum, complexity, pattern, wrap );
+    FlipIt game( numRows, numCols, gameNum, complexity, pattern, wrap );
 
     play( game );
 
@@ -273,5 +273,3 @@ int  main(int argc, char* argv[])
 
   return  0;
 }
-
-
