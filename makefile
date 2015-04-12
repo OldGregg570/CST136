@@ -1,33 +1,27 @@
-CC = g++
-CFLAGS  = -g -Wall -std=c++0x
+CC 			= g++ -g -Wall -std=c++0x
+SRC_GRID    = ./src/grid.cpp ./include/grid.h
+SRC_FLIPIT  = ./src/flipIt.cpp ./include/flipIt.h
+SRC_DISPLAY = ./src/flipitDisplay.cpp ./include/flipitDisplay.h
+SRC_ALL 	= $(SRC_GRID) $(SRC_FLIPIT) $(SRC_DISPLAY)
 
-SRC = ./src/grid.cpp ./include/grid.h ./src/flipIt.cpp ./include/flipIt.h ./src/flipitDisplay.cpp ./include/flipitDisplay.h
-
-all: ./bin/flipitDisplay.o ./bin/flipIt.o
-	$(CC) $(CFLAGS) -o ./bin/flipit ./src/flipitMain.cpp $(SRC)
+all: flipitDisplay.o flipIt.o
+	$(CC) -o ./bin/flipit ./src/flipitMain.cpp $(SRC_ALL)
 
 start: all
 	./bin/flipit
 
-test: ./bin/flipitDisplay.o ./bin/flipIt.o ./bin/grid.o
-	$(CC) $(CFLAGS) -o ./bin/test ./test/flipit_test.cpp $(SRC)
+test: flipitDisplay.o flipIt.o grid.o
+	$(CC) ./src/flipit.spec.cpp $(SRC_ALL) -o ./bin/test
 	./bin/test
 
-./bin/flipitDisplay.o: ./src/flipitDisplay.cpp ./include/flipitDisplay.h
-	$(CC) $(CFLAGS) -c ./src/flipitDisplay.cpp ./include/flipitDisplay.h -o ./bin/flipitDisplay.o
+flipitDisplay.o: $(SRC_DISPLAY)
+	$(CC) -c $(SRC_DISPLAY) -o ./bin/flipitDisplay.o
 
-./bin/flipIt.o: ./src/flipIt.cpp ./include/flipIt.h
-	$(CC) $(CFLAGS) -c ./src/flipIt.cpp ./include/flipIt.h -o ./bin/flipitDisplay.o
+flipIt.o: $(SRC_FLIPIT)
+	$(CC) -c $(SRC_FLIPIT) -o ./bin/flipIt.o
 
-gridSample: ./bin/grid.o ./bin/gridSample.o
-	$(CC) $(CFLAGS) -o ./gridSample.exe ./src/gridSamp.cpp ./src/flipitDisplay.cpp ./include/flipitDisplay.h ./src/grid.cpp ./include/grid.h 
-	
-./bin/gridSample.o: ./bin/grid.o ./src/gridSamp.cpp
-	$(CC) $(CFLAGS) -c ./src/gridSamp.cpp -o ./bin/gridSample.o
+grid.o: $(SRC_GRID)
+	$(CC) -c $(SRC_GRID) -o ./bin/grid.o
 
-./bin/grid.o: ./src/grid.cpp ./include/grid.h
-	$(CC) $(CFLAGS) -c ./src/grid.cpp ./include/grid.h -o ./bin/grid.o
-
-clean: 
-	rm ./bin/*.o
-	rm ./bin/*.exe
+clean:
+	rm ./bin/*.o ./bin/*.exe ./*.exe -f

@@ -18,6 +18,7 @@ using  namespace  std;
 
 const int PAT_SIZE 		= 9;
 
+int PAT_DEFAULT[PAT_SIZE]  = {0, 0, 0, 0, 1, 0, 0, 0, 0};
 int PAT_CROSS[PAT_SIZE]    = {0, 1, 0, 1, 1, 1, 0, 1, 0};
 int PAT_X[PAT_SIZE]        = {1, 0, 1, 0, 1, 0, 1, 0, 1};
 int PAT_SQUARE[PAT_SIZE]   = {1, 1, 1, 1, 1, 1, 1, 1, 1};
@@ -79,15 +80,12 @@ void FlipIt::toggleCell(int row, int col) {
  * 	v - size of the wrap cycle
  *********************************************************************/
 int FlipIt::_neighbor(int d, int p, int v) const {
-	if (!m_wrap && (p + d >= v || p + d < 0)) {
-		return -1;
-	}
-	else {
-		if (p + d >= v) 		p -= v;
-		else if (p + d < 0) 	p += v;
-		return p + d;
-	}
+	// If wrapping isn't allowed and our neighbor is an edge, return -1
+	if (!m_wrap && (p + d >= v || p + d < 0))  return -1;
 
+	if (p + d >= v) 		p -= v;
+	else if (p + d < 0) 	p += v;
+	return p + d;
 }
 
 
