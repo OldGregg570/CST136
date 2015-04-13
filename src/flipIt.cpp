@@ -18,12 +18,7 @@ using  namespace  std;
 
 const int PAT_SIZE = 9;
 
-int PAT_DEFAULT[PAT_SIZE]  	= {0, 0, 0, 0, 1, 0, 0, 0, 0};
-int PAT_CROSS[PAT_SIZE]    	= {0, 1, 0, 1, 1, 1, 0, 1, 0};
-int PAT_X[PAT_SIZE]        	= {1, 0, 1, 0, 1, 0, 1, 0, 1};
-int PAT_SQUARE[PAT_SIZE]   	= {1, 1, 1, 1, 1, 1, 1, 1, 1};
-int PAT_HOLLOW[PAT_SIZE]   	= {1, 1, 1, 1, 0, 1, 1, 1, 1};
-int PAT_CORNERS[PAT_SIZE]  	= {1, 0, 1, 0, 0, 0, 1, 0, 1};
+
 
 int DIRS[][3] 				= {{-1, -1}, {0, -1}, {1, -1},
 							   {-1,  0}, {0,  0}, {1,  0},
@@ -41,8 +36,10 @@ FlipIt::FlipIt(int rows, int cols,
 	m_wrap(wrap)
 {
 	srand(seed);
+
+	//click the board in a random location 'complexity' times
 	for (int n = 0; n < complexity; n++)
-		this->click(rand() % (rows - 1), rand() % (cols - 1));
+		this->click(rand() % (rows), rand() % (cols));
 }
 
 /**********************************************************************
@@ -72,12 +69,18 @@ void FlipIt::toggleCell(int row, int col)
  * 	p - the value being wrapped
  * 	v - size of the wrap cycle
  *********************************************************************/
-int FlipIt::_neighbor(int p, int d, int v) const
+int FlipIt::_neighbor(int val, int delta, int size) const
 {
-	if (!m_wrap && (p + d >= v || p + d < 0)) return -1;
-	if (p + d >= v) 		p -= v;
-	else if (p + d < 0) 	p += v;
-	return p + d;
+	// If wrapping isn't allowed and the value would wrap, return -1
+	if (!m_wrap && (val + delta >= size || val + delta < 0))
+		return -1;
+
+	// If we are stepping off the edge, wrap around
+	if (val + delta >= size) 		val -= size;
+	else if (val + delta < 0) 		val += size;
+
+	// return value some delta representing the neighbor direction
+	return val + delta;
 }
 
 /**********************************************************************
@@ -86,6 +89,8 @@ int FlipIt::_neighbor(int p, int d, int v) const
  *********************************************************************/
 int FlipIt::neighbor_x(int i, int dx) const
 {
+	// Based on a 1D array index, calculate the x val
+	// and find its neighbor
 	return _neighbor(i % numCols(), dx, numCols());
 }
 
@@ -95,6 +100,8 @@ int FlipIt::neighbor_x(int i, int dx) const
  *********************************************************************/
 int FlipIt::neighbor_y(int i, int dy) const
 {
+	// Based on a 1D array index, calculate the y val
+	// and find its neighbor
 	return _neighbor(i / numCols(), dy, numRows());
 }
 
@@ -103,6 +110,7 @@ int FlipIt::neighbor_y(int i, int dy) const
  *********************************************************************/
 void FlipIt::click(int row, int col)
 {
+	// List of nine ones and zeros that represent a pattern
 	int *p_pattern = getPattern();
 	int home = col + (row *  numCols());
 
@@ -112,13 +120,21 @@ void FlipIt::click(int row, int col)
 		{
 			int x = neighbor_x(home, DIRS[i][0]);
 			int y = neighbor_y(home, DIRS[i][1]);
+			// If the neigbor index is valid, toggle the cell
 			if (x > -1 and y > -1) toggleCell(y, x);
 		}
 	}
 }
 
+int PAT_DEFAULT[PAT_SIZE]  	= {0, 0, 0, 0, 1, 0, 0, 0, 0};
+int PAT_CROSS[PAT_SIZE]    	= {0, 1, 0, 1, 1, 1, 0, 1, 0};
+int PAT_X[PAT_SIZE]        	= {1, 0, 1, 0, 1, 0, 1, 0, 1};
+int PAT_SQUARE[PAT_SIZE]   	= {1, 1, 1, 1, 1, 1, 1, 1, 1};
+int PAT_HOLLOW[PAT_SIZE]   	= {1, 1, 1, 1, 0, 1, 1, 1, 1};
+int PAT_CORNERS[PAT_SIZE]  	= {1, 0, 1, 0, 0, 0, 1, 0, 1};
+
 /**********************************************************************
- * Return the 3x3 binary matrix for the specified pattern
+ * Return the binary list of nine for the specified pattern
  *********************************************************************/
 int* FlipIt::getPattern() const
 {
