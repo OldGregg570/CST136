@@ -1,3 +1,11 @@
+/**********************************************************************
+ * Author      :  Andrew Bragg
+ * Class       :  CST 136
+ * Assignment  :  #1
+ * File        :  flipit.spec.cpp
+ * Description :  flipit test spec. Uses catch as testing framework.
+ *********************************************************************/
+
 #define CATCH_CONFIG_MAIN
 #define private public
 

@@ -1,7 +1,7 @@
 /**********************************************************************
- * Assignment  :  #1
- * Class       :  CST 136
  * Author      :  Andrew Bragg
+ * Class       :  CST 136
+ * Assignment  :  #1
  * File        :  flipIt.cpp
  * Description :  FlipIt Engine.
  *********************************************************************/
