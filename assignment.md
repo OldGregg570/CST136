@@ -1,234 +1,189 @@
 
+CST 136 - Assignment 2
 
-CST 136 - Assignment 1
 
-
-Due Date/Time: Sunday, April 12th by 11:59pm
+Due Date/Time:  Sunday, April 26th, by 11:59pm
 
 ----------
 
-In the workplace each developer commonly does not get the opportunity to fully
-implement an entire application. Rather, each engineer implements a portion of
-the functionality as a set of routines that become part of a library. Using C++,
-libraries of classes can be created that can be reused from project to project
-and/or shared across a project. When this is done, a header file (.h) is created
-that contains the class declaration and supporting non-member declarations, and
-a body file (.cpp) which contains the implementation of the class member
-functions and supporting non-member functionality. In this assignment you will
-create (and hand in) just such a class library.
+For this assignment you will create two classes:
 
-The class you will implement for this assignment will be the game engine for
-a game called "Flip It".
+  Array  -  a class that provides the same type of fuctionality as
+            built-in arrays, but it allows for specifying lower
+            and upper bound index values and uses dynamic memory.
 
----
+  SafeArray  -  same functionality as Array but adds the additional
+                behavior of index bounds checking.
 
-Here is the basic rules of the game:
+Both of these classes are explained in detail below.
 
-The game board consists a grid (rows and columns) of cells. Each cell can be
-one of two colors: solid or clear. The user will select a cell. This action will
-result in a pattern of nearby cells to switch colors. The goal is to select
-cells in the correct order so that the grid becomes totally clear.
+The declarations for both these classes should be in a header
+file called array.h and the implementations can be in a
+single .cpp file or in a seperate .cpp file for each class.
 
-The game has the following user-selectable settings:
+The data type of the elements stored in the Array or SafeArray
+class should be declared using a typedef that can later be
+changed. For example, if the element type is integer, you
+could define a typedef this way in array.h:
 
-  Number of rows: the number of rows of cells in the grid.
+  typedef  int  ELEMENT_TYPE;
 
-  Number of columns: the number of columns of cells in the grid.
+Then if you later want the element type to be something other
+than int, you should just have to change the ELEMENT_TYPE typedef
+and recompile your array.cpp file. No other changes should be
+required in the class code to change the element type.
 
-  Game number: determines the starting point for setting up the game.
-
-  Complexity: determines the difficulty level for the game.
-
-  Pattern: determines which nearby grid positions have their color switched
-  when a cell is selected.
-
-  Wrap flag: an indication of whether patterns are cut-off by the grid
-  borders or "wrapped" to the other side of the grid.
-
-On the "assignments" web page, you'll find Windows .exe files for both a
-text-based and GUI-based version of the game. Use these programs to become
-familiar with the game and possible settings.
-
----
-
-You are to provide the implementation for a class called FlipIt that provides
-the "engine" of the Flip It game. An "engine" is a set of routines (or a class)
-that provides processing functionality but not a user interface. In the
-case of the Flip It game, the FlipIt class provides the algorithms for the
-FlipIt game grid. Then client programs (which are provided for you) will use
-the FlipIt game engine to actually implement a playable game.
-
-A FlipIt object will be instantiated (by the client) for each game that is to
-being played. It will be constructed at the beginning of the game, and it
-will be destructed when the game is complete.
-
-I have provided source code for a text-based client program that you can
-use with your FlipIt class to implement and test the full game.
-
----
-
-The public interface for the FlipIt class has been provided for you in the
-file flipIt.h. You are NOT to modify the public interface because the client
-functionality I've provided depends on the public interface not changing.
-
-The public interface is as follows:
-
-  FlipIt()  Constructor. The six settings for each game are provided as
-            parameters to the constructor. The constructor should do
-            whatever is necessary to setup the member data for a new
-            game. See the FAQ for more information about initializing a
-            new game.
-
-  numRows() Takes no parameters, returns the number of rows in the
-            game grid for the game.
-
-  numCols() Takes no parameters, returns the number of columns in the
-            game grid for the game.
-
-  click()   Parameters are zero-based row and column values. You can assume
-            that the row value is greater-than-or-equal-to zero AND
-            less-than the number of rows values passed into the construtor.
-            You can assume the column value is greater-than-or-equal-to zero
-            AND less-than the number of columns value passed into constructor.
-            This function should update the internal engine data based on
-            having the row,column grid position selected. It should take into
-            account pattern and wrap flag settings that were provided when
-            the FlipIt object was created.
-
-  fetch()   Parameters are zero-based row and column values. You can assume
-            that the row value is greater-than-or-equal-to zero AND
-            less-than the number of rows values passed into the construtor.
-            You can assume the column value is greater-than-or-equal-to zero
-            AND less-than the number of columns value passed into constructor.
-            This function returns whether or not the cell at the specified
-            grid position is currently clear or solid.
-
-  done()    No parameters. This function returns true if all grid positions
-            are clear (indicating the game is over). If any grid position
-            is solid, false should be returned.
+When handing in the assignment have the element type set to
+integer ... but I'd recommend testing using additional types.
 
 
-All member data and routines should be implemented in a flexible manner such
-that the grid size can be diferent from game to game by just providing differ
-row/column values to the constructor.
+The Array class
+---------------
+Create a class called Array that will provide the behavior similar to that
+of a normal array and can store elements. The array will have the following
+features beyond that of a normal array:
 
----
+  - When an array object is instantiated, lower and upper bound index values are
+    specified. The lower index bound is defaulted to zero. No default for the
+    upper index bound. Here is a few examples of instantiating Array objects:
 
-I've provide the flipit.h header file with the public section of the
-class declaration. You will need to modify this file to:
-  - include any headers needed by the class declaration
-  - implement any inline accessor functions
-  - declare the private member data/functions.
+       Array  values(10);
+          //
+          // Creates an 11 element array with a lower index of zero
+          // and an upper index of 10.
+          //
 
-Do NOT change the public interface since the client programs depend on this.
+       Array  numbers(50, 45);
+          //
+          // Creates a six element array with a lower index of 45 and
+          // an upper index of 50.
+          //
 
-You are to provide the implementation of the FlipIt class member functions
-in the file flipit.cpp.
+    If the upper bound is less than the lower bound, display an error message
+    and terminate the program.
 
-For this assignment you need to send me just the flipit.h and flipit.cpp
-files.
+  - Contiguous memory for array elements should be dynamically allocated when Array
+    objects are instantiated and managed internally by the Array member functions.
+    Only the exact amount of memory necessary to store the array elements should
+    be allocated.
 
----
+  - Array objects should be copy-safe. They should use a deep copy scheme
+    so that array memory is duplicated when copies are made.
 
-For the implementation of FlipIt class, you are to use a Grid class
-object as a member variable. The Grid class provides memory management for
-flexible row/column grid system, where each cell of the grid can be
-in a state of either set (true) or clear (false).
 
-The declaraction and member function definitions (implementation) of
-the Grid class are provided for you on the assignments web page in the
-files grid.h and grid.cpp.  Do not modify these files.
+The Array class should provide at least the following public member
+functionality:
 
-Additional documentation for the Grid class can be found in grid.h.
+  - A regular constructor that allows the caller to specify lower and upper bound
+    index values. The lower bound index should be defaulted to zero. The upper bound
+    should not have a default value.  Bounds can be positive or negative. The lower
+    bound index must be less-than-or-equal-to the upper bound index (an error should
+    be displayed and the program terminated if this is not the case). The constructor
+    should dynamically allocate all necessary memory for the array and rely on the
+    element type's default constructor for initialization. If memory allocation
+    fails, write a message to cout and terminate the program.
 
-A sample program (gridSamp.cpp) is provide for you on the assignments
-web page. This program shows how you will need to interact with the
-Grid class to set and clear cells.
+  - a deep-copy copy constructor and destructor for handling the dynamic memory
+    management.
 
----
+  - A set() function that will allow the caller to place an element value at a
+    specific index position in the array.
 
-Also, on the "assigments" web page you'll find source code for a text-based
-Flip It game client. This client code is made up of three files:
+  - A get() function that will allow the caller to fetch an element value from a
+    specific index position within the array.
 
-  flipitDisplay.h    - game grid text-based display routines declarations
-  flipitDisplay.cpp  - game grid text-based display routines definitions
-  flipitMain.cpp     - text-based game main program
+  - A lowerBound() function which returns the index for of the lower bound
+    for the array.
 
-Use these along with your flipit.h and flipit.cpp files and the provided
-grid.h and grid.cpp files to test your FlipIt class game engine.
+  - Am upperBound() function which returns the index of the upper bound
+    for the array.
 
----
+  - A numElements() function which returns the number of elements the array
+    can hold.
 
-In your implementation of this assignment, you must adhere to the
-following constraints:
+  - A size() function which returns the number of bytes that were allocated
+    to hold all the elements.
 
-  - no public member variables allowed. All your member variables
-    should be private.
+Here's some sample client calls to member functions for the Array objects created
+above (these assume the element type is int):
 
-  - you must use an object of type Grid as one of your member variables
-    inside your FlipIt class to keep track of the game board state.
+      values.set(0, 21);
+        //
+        // Sets the first element in the "values" array to 21.
+        //
 
-  - no pointers or dynamic memory. You do not need either of these
-    for this assignment and I do not want you to use them. If you don't
-    know how to do something in this assignment without pointers or
-    dynamic memory, ask +me for suggestions.
+      int  x = values.get(1);
+        //
+        // Fetches the value stored in the second element of the "values" array
+        // and stores it in the variable called x.
+        //
 
-    Note: the Grid class uses a pointer member variable and dynamic
-    memory internally for it's implementation. But all of this is
-    encapsulated inside the Grid member functions. This is okay
-    because I'm providing this for you.
+      numbers.set(45, 3);
+        //
+        // Stores the value of 3 in the first element in the "numbers" array.
+        //
 
-  - you are not allowed to use global variables or static variables.
-    The entire assignment should be implemented using only local
-    variables, non-static member variables, and function parameters.
 
-  - you MUST use a member initialization list to inialize all of
-    your member variables in your constructor.
 
----
+The SafeArray class
+-------------------
+Create a class called SafeArray that provides all the same functionality
+as Array with the added behavior of providing index bounds checking when clients
+are setting/retrieving element values. The public interface for clients of
+SafeArray should be the same as Array. The behavior of the following member
+functions change:
 
-Things I'll specifically be looking for in this assignment:
+  - All indexing into the array (for reading or writing elements) will have
+    bounds checking performed to ensure the index value is valid. Valid index
+    values are greater-than-or-equal-to the lower bound AND less-than-or-equal-to
+    the upper bound.
 
- - Correct functionality.
- - Good use of header and body files
- - Proper use of const for member functions AND supporting funtions
-   (this include function const-ness and parameter const-ness).
- - Good use of encapsulation to hide implementation details from the
-   class interface.
- - Good use of private member functions to hide implementation and
-   eliminate redundancy.
- - Use of member initialitzation in the constructor.
- - Good programming style
-     Modularity, naming conventions, commenting, no global variables
-     or goto statements, no magic numbers, etc.
+  - The set() function will still allow the caller to place an element at
+    a specific index position in the array. If the index is out of range, the
+    function should write an error message to the cout stream and terminate
+    the program immediately.
 
----
+  - The get() function will still allow the caller to fetch an element value
+    from a specific index position within the array. If the array index is
+    out of range, the function should write an error message to the cout
+    stream and terminate the program immediately.
 
-Ask questions. If you don't understand the assignment, need assistance
-with designing algoirthms, language syntax, compile errors, or anything
-else related to implementing this assignment, don't hesitate to
-send me email or call me.
+I'm expecting you to use inheritance for the implementation of the SafeArray class.
 
----
 
-Some hints...
 
-Hint #1:  Play the game enough before you start this assignment in order
-          to understand what all the settings do.  You will not be
-          successful with this assignment if you do not understand all
-          the functionlity of the game.
+A few of the thing's I'll be looking for in this assignment
+-----------------------------------------------------------
 
-Hint #2:  Understand the Grid class that I've provided.  You do not need
-          look at the code in grid.cpp, but you should read the class
-          documentation in grid.h.  Plus, you should try out the sample
-          program I provided that uses this class.  Modify the sample
-          code as needed to help you understand all of the functionality
-          provide by the Grid class.  You will be using Grid inside of
-          your FlipIt class, so you need to understand it.
+  - Proper use of header/body files. Put the class declarations in a
+    header file (you can use one .h for both Array and SafeArray) and
+    the definitions in a .cpp file (one for both is okay here too).
 
-Hint #3:  You do not need to use an array anywhere in this
-          assignment.  If you find yourself wanting to use an array,
-          you might want to talk with me about why that isn't necessary.
+  - Proper use of encapsulation functionality (data member hiding/abstraction)
 
-Hint #4:  Don't put off this assignment until the last minute.  You will
-          not be successful on this assignment if you put it off.
+  - Proper use of dynamic memory:
+      o  no memory leaks
+      o  a correct "deep-copy" copy constructor
+      o  checking for successful allocation
+      o  no wasted memory
+
+  - Proper use of inheritance. This includes:
+      o  hiding of parent data that the child class doesn't need access to.
+      o  chaining function calls by the child to eliminate the need for
+         duplicate functionality in parent and child classes.
+
+  - Proper const correct-ness for member functions.
+
+  - Complete use of a typedef for the element type, such that by only
+    changing the typedef and recompiling, the Array and SafeArray classes
+    should be able to used with an element type other than int.
+
+  - Use of member initialization in all constructors for the
+    parent and child classes.
+
+  - Good use of private member functions to modularize internal class functionality
+
+  - Effiecient use of member variables (ie. no redundent values).
+
+  - Good programming style (see the assignments web page for more information
+    on style).
