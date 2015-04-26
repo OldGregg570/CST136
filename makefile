@@ -1,28 +1,14 @@
-CFLAGS 		= -g -Wall -std=c++0x -I./include/
+CFLAGS 		= -g -Wall -std=c++0x -I./include/ -I./lib/
 CC 			= g++ $(CFLAGS)
-SRC_GRID    = ./src/grid.cpp ./include/grid.h
-SRC_FLIPIT  = ./src/flipIt.cpp ./include/flipIt.h
-SRC_DISPLAY = ./src/flipitDisplay.cpp ./include/flipitDisplay.h
-SRC_ALL 	= $(SRC_GRID) $(SRC_FLIPIT) $(SRC_DISPLAY)
+SRC_ARRAY    = ./src/array.cpp ./include/array.h
+SRC_ALL 	= $(SRC_ARRAY)
 
-all: flipitDisplay.o flipIt.o
-	$(CC) -o ./bin/flipit ./src/flipitMain.cpp $(SRC_ALL)
-
-start: all
-	./bin/flipit
-
-test: flipitDisplay.o flipIt.o grid.o
-	$(CC) ./src/flipit.spec.cpp $(SRC_ALL) -o ./bin/test
+test: array.o
+	$(CC) ./src/array.spec.cpp $(SRC_ALL) -o ./bin/test
 	./bin/test
 
-flipitDisplay.o: $(SRC_DISPLAY)
-	$(CC) -c $(SRC_DISPLAY) -o ./bin/flipitDisplay.o
-
-flipIt.o: $(SRC_FLIPIT)
-	$(CC) -c $(SRC_FLIPIT) -o ./bin/flipIt.o
-
-grid.o: $(SRC_GRID)
-	$(CC) -c $(SRC_GRID) -o ./bin/grid.o
+array.o: $(SRC_ARRAY)
+	$(CC) -c $(SRC_ARRAY) -o ./bin/array.o
 
 clean:
 	rm ./bin/*.o ./bin/*.exe ./*.exe -f
