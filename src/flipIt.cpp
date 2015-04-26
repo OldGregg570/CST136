@@ -12,7 +12,7 @@
 #include <limits.h>
 #include <assert.h>
 #include "flipIt.h"
-#include "sgrid.h"
+#include "grid.h"
 
 using  namespace  std;
 
@@ -20,9 +20,9 @@ const int PAT_SIZE = 9;
 
 
 
-const int DIRS[][3] 				= {{-1, -1}, {0, -1}, {1, -1},
-									   {-1,  0}, {0,  0}, {1,  0},
-									   {-1,  1}, {0,  1}, {1,  1}};
+int DIRS[][3] 				= {{-1, -1}, {0, -1}, {1, -1},
+								   {-1,  0}, {0,  0}, {1,  0},
+								   {-1,  1}, {0,  1}, {1,  1}};
 
 /**********************************************************************
  * Constructor. Initializes board by clicking it in complexity random
