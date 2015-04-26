@@ -11,8 +11,8 @@
 #include <string.h>
 #include <limits.h>
 #include <assert.h>
-#include "../include/flipIt.h"
-#include "../include/grid.h"
+#include "flipIt.h"
+#include "grid.h"
 
 using  namespace  std;
 

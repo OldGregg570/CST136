@@ -13,7 +13,7 @@
 //
 
 
-#include  "../include/flipitDisplay.h"
+#include  "flipitDisplay.h"
 #include  <iostream>
 
 using  namespace  std;

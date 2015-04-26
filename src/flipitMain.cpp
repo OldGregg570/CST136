@@ -12,8 +12,8 @@
 #include  <stdlib.h>
 #include  <string.h>
 #include  <limits.h>
-#include  "../include/flipIt.h"
-#include  "../include/flipitDisplay.h"
+#include  "flipIt.h"
+#include  "flipitDisplay.h"
 
 using  namespace  std;
 

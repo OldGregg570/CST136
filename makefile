@@ -1,4 +1,5 @@
-CC 			= g++ -g -Wall -std=c++0x
+CFLAGS 		= -g -Wall -std=c++0x -I./include/
+CC 			= g++ $(CFLAGS)
 SRC_GRID    = ./src/grid.cpp ./include/grid.h
 SRC_FLIPIT  = ./src/flipIt.cpp ./include/flipIt.h
 SRC_DISPLAY = ./src/flipitDisplay.cpp ./include/flipitDisplay.h

@@ -9,8 +9,8 @@
 #define CATCH_CONFIG_MAIN
 #define private public
 
-#include "../include/flipIt.h"
-#include "../lib/catch.hpp"
+#include "flipIt.h"
+#include "catch.hpp"
 #include <iostream>
 #include <string.h>
 #include <stdio.h>

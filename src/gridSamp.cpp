@@ -14,7 +14,7 @@
 #define  _CRT_SECURE_NO_DEPRECATE
 
 
-#include  "../include/grid.h"
+#include  "grid.h"
 #include  <iostream>
 #include  <string>
 

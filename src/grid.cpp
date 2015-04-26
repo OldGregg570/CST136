@@ -12,7 +12,7 @@
 //
 
 
-#include  "../include/grid.h"
+#include  "grid.h"
 #include  <assert.h>
 #include  <stdlib.h>
 
