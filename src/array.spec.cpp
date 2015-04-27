@@ -9,7 +9,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "array.h"
-#include "../lib/catch.hpp"
+#include "catch.hpp"
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
@@ -22,22 +22,11 @@ using namespace std;
 TEST_CASE("robustness testing") {
     Array::set_exit(false);
     SECTION("finding upper limit on allocation") {
-        cout << "\nINT_MAX elements \n<error>\n\t ";
         Array array_too_large_0(INT_MAX);
-        cout << "</error>\n";
-        cout << "\nINT_MAX / 2 elements \n<error>\n\t ";
         Array array_too_large_1(INT_MAX / 2);
-        cout << "</error>\n";
-        cout << "\nINT_MAX / 4 elements \n<error>\n\t ";
         Array array_too_large_2(INT_MAX / 4);
-        cout << "</error>\n";
-
-        cout << "\nINT_MAX / 8 elements \n<no_error> ";
         Array array_small_enough_0(INT_MAX / 8);
-        cout << "</no_error>\n";
-        cout << "\nINT_MAX / 16 elements \n<no_error> ";
         Array array_small_enough_1(INT_MAX / 16);
-        cout << "</no_error>\n";
 
         cout << INT_MAX / 8 << " element array: ";
         cout << array_small_enough_0.size() << " bytes\n";
@@ -72,9 +61,7 @@ TEST_CASE("array constructor") {
         REQUIRE(array.numElements() == 1);
     };
     SECTION("instantiating an array with upper < lower should output an error") {
-        cout << "\nINT_MAX / 4 elements \n<error>\n\t ";
         Array array(1, 4);
-        cout << "</error>\n";
     };
 };
 
@@ -192,20 +179,9 @@ TEST_CASE("SafeArray should work with ints") {
         REQUIRE(array.get(0) == 42);
         REQUIRE(array.get(9) == 42);
 
-        cout << "\narray.get(-1) == 42 \n<error>\n\t ";
         REQUIRE(array.get(-1) == 42);
-        cout << "</error>\n";
-
-        cout << "\narray.get(10) == 42 \n<error>\n\t ";
         REQUIRE(array.get(10) == 42);
-        cout << "</error>\n";
-
-        cout << "\narray.set(-10, 100) \n<error>\n\t ";
         array.set(-10, 100);
-        cout << "</error>\n";
-
-        cout << "\narray.get(-10) == 42 \n<error>\n\t ";
         REQUIRE(array.get(-10) == 42);
-        cout << "</error>\n";
     };
 };

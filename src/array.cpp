@@ -58,8 +58,7 @@ Array::Array(const Array &rhs) :
 {
 
     memcpy(m_data, rhs.m_data, rhs.size());
-    if (!m_data)
-        err_exit(ALLOC_ERROR);
+    if (!m_data) err_exit(ALLOC_ERROR);
 }
 
 /**********************************************************************

@@ -26,7 +26,7 @@ public:
   const int upperBound() { return m_upper; };
 
   const int numElements() const { return m_upper - m_lower + 1; };
-  const int size() const { return (sizeof *m_data) * numElements(); };
+  const int size() const { return ( sizeof *m_data) * numElements(); };
 
   static void set_exit(bool exit) { m_exit = exit; };
 
@@ -40,7 +40,6 @@ private:
   static bool m_exit;
 };
 
-
 class SafeArray : public Array
 {
 public:
@@ -51,7 +50,7 @@ public:
   const ELEMENT_TYPE get(int index);
 
 private:
-  const bool in_bounds(int index) {return !(index < m_lower || index > m_upper); }
+  const bool in_bounds(int index) { return !(index < m_lower || index > m_upper); }
 
 };
 
