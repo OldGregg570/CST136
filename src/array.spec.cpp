@@ -65,56 +65,7 @@ TEST_CASE("array constructor") {
     };
 };
 
-/**
- * Array<int> with 4-byte ints
- */
-TEST_CASE("array copy constructor") {
-    Array<int>::set_exit(false);
-    SECTION("copied array should have the same size as original") {
-        Array<int> array(9);
-        Array<int> array_copy(array);
-        REQUIRE(array_copy.upperBound() == 9);
-        REQUIRE(array_copy.lowerBound() == 0);
-        REQUIRE(array_copy.numElements() == 10);
-    };
-    SECTION("copied array should have the same data as original") {
-        Array<int> array(9);
-        array.set(0, 10);
-        array.set(1, 50);
-        array.set(2, 110);
-        Array<int> array_copy(array);
-        REQUIRE(array_copy.get(0) == 10);
-        REQUIRE(array_copy.get(1) == 50);
-        REQUIRE(array_copy.get(2) == 110);
-    };
-    SECTION("shallow copy should not let arrays be modified independently") {
-        Array<int> array(9);
-        array.set(0, 10);
-        array.set(1, 50);
-        array.set(2, 110);
 
-        Array<int> array_copy(array);
-        // Modifying the copy ...
-        array_copy.set(0, 15);
-        array_copy.set(1, -15);
-        array_copy.set(2, 155);
-
-        // ... should change the original
-        REQUIRE(array.get(0) == 15);
-        REQUIRE(array.get(1) == -15);
-        REQUIRE(array.get(2) == 155);
-
-        REQUIRE(array_copy.get(0) == 15);
-        REQUIRE(array_copy.get(1) == -15);
-        REQUIRE(array_copy.get(2) == 155);
-
-        // Modifying the original ...
-        array.set(2, 200);
-
-        // ... should change the copy
-        REQUIRE(array_copy.get(2) == 200);
-    };
-};
 
 TEST_CASE("array.size method on array of ints (4 bytes for an int on my machine)") {
     REQUIRE(sizeof(int) == 4);
