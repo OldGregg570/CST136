@@ -22,16 +22,16 @@ using namespace std;
  */
 TEST_CASE("robustness testing") {
     Array<int>::set_exit(false);
-    SECTION("finding approximate upper limit on allocation") {
+//    SECTION("finding approximate upper limit on allocation") {
 //        Array<int> array_too_large_0(INT_MAX);
 //        Array<int> array_too_large_1(INT_MAX / 2);
 //        Array<int> array_too_large_2(INT_MAX / 4);
-        Array<int> array_small_enough_0(INT_MAX / 8);
-        Array<int> array_small_enough_1(INT_MAX / 16);
-
-        cout << INT_MAX / 8 << " element array: ";
-        cout << array_small_enough_0.size() << " bytes\n";
-    }
+//        Array<int> array_small_enough_0(INT_MAX / 8);
+//        Array<int> array_small_enough_1(INT_MAX / 16);
+//
+//        cout << INT_MAX / 8 << " element array: ";
+//        cout << array_small_enough_0.size() << " bytes\n";
+//    }
 };
 
 TEST_CASE("array constructor") {
