@@ -1,189 +1,136 @@
 
-CST 136 - Assignment 2
+CST 136 - Assignment 3
 
 
-Due Date/Time:  Sunday, April 26th, by 11:59pm
+Due Date/Time:  Tuesday, May 5th, by 11:59pm
 
 ----------
 
-For this assignment you will create two classes:
+For this assignment start with the Array and SafeArray classes you created
+in assignment #2. If you want to use my assignment 2 solution as a starting
+point for this assignment, you'll find my source code files on the
+"assignments" web page (if they're not posted yet, send me email and
+I'll send my assignment #2 solution to you ... if you've already sent
+me your assignment #2 solution).
 
-  Array  -  a class that provides the same type of fuctionality as
-            built-in arrays, but it allows for specifying lower
-            and upper bound index values and uses dynamic memory.
+All requirements for Array and SafeArray remain the same as those from
+assignment #2 with the following additions/modifications:
 
-  SafeArray  -  same functionality as Array but adds the additional
-                behavior of index bounds checking.
+  - Change Array and SafeArray from classes to template classes so that
+    they support any data type for elements being stored in the array. The
+    following examples illustate creating/using the classes with various
+    data types:
 
-Both of these classes are explained in detail below.
+       Create an Array<> object that holds doubles and has index values of
+       0 to 10, and stores the value 3.14 at the 2nd index position:
 
-The declarations for both these classes should be in a header
-file called array.h and the implementations can be in a
-single .cpp file or in a seperate .cpp file for each class.
+         Array<double>  values(10);
 
-The data type of the elements stored in the Array or SafeArray
-class should be declared using a typedef that can later be
-changed. For example, if the element type is integer, you
-could define a typedef this way in array.h:
+         values.at(1)  =  3.14;   // read below for a description of the new at()
+                                  // member function.
 
-  typedef  int  ELEMENT_TYPE;
+       Create a SafeArray<> object that holds Point objects and has index
+       values of 31 to 38, and stores the value 5,8 at the last valid index
+       position:
 
-Then if you later want the element type to be something other
-than int, you should just have to change the ELEMENT_TYPE typedef
-and recompile your array.cpp file. No other changes should be
-required in the class code to change the element type.
+         class Point { ... };   // a default ctor is assumed
 
-When handing in the assignment have the element type set to
-integer ... but I'd recommend testing using additional types.
+         SafeArray<Point>  data(38, 31);
 
+         data.at(38)  =  Point(5,8);
 
-The Array class
----------------
-Create a class called Array that will provide the behavior similar to that
-of a normal array and can store elements. The array will have the following
-features beyond that of a normal array:
+    Recommendation: make sure ALL your class member functions work for both
+                    built-in and user-defined classes that meet the expected
+                    template constraints.
 
-  - When an array object is instantiated, lower and upper bound index values are
-    specified. The lower index bound is defaulted to zero. No default for the
-    upper index bound. Here is a few examples of instantiating Array objects:
+  - In the .h file(s) there needs to be a comment block above the declaration
+    for both the Array<> and SafeArray<> that state all the constraints of
+    the template classes.  It should look something like this:
 
-       Array  values(10);
-          //
-          // Creates an 11 element array with a lower index of zero
-          // and an upper index of 10.
-          //
-
-       Array  numbers(50, 45);
-          //
-          // Creates a six element array with a lower index of 45 and
-          // an upper index of 50.
-          //
-
-    If the upper bound is less than the lower bound, display an error message
-    and terminate the program.
-
-  - Contiguous memory for array elements should be dynamically allocated when Array
-    objects are instantiated and managed internally by the Array member functions.
-    Only the exact amount of memory necessary to store the array elements should
-    be allocated.
-
-  - Array objects should be copy-safe. They should use a deep copy scheme
-    so that array memory is duplicated when copies are made.
+        /*
+         * Constraints for the TYPE datatype for the Array<> template class:
+         *
+         *   - TYPE must support ...
+         *   - TYPE must support ...
+         *   ...
+         *
+         */
+        template<class TYPE>
+        class  Array
+        {
+          ...
+        };
 
 
-The Array class should provide at least the following public member
-functionality:
+        /*
+         * Constraints for the TYPE datatype for the SafeArray<> template class:
+         *
+         *   ...
+         *
+         */
+        template<class TYPE>
+        class  SafeArray  ...
+        {
+          ...
+        };
 
-  - A regular constructor that allows the caller to specify lower and upper bound
-    index values. The lower bound index should be defaulted to zero. The upper bound
-    should not have a default value.  Bounds can be positive or negative. The lower
-    bound index must be less-than-or-equal-to the upper bound index (an error should
-    be displayed and the program terminated if this is not the case). The constructor
-    should dynamically allocate all necessary memory for the array and rely on the
-    element type's default constructor for initialization. If memory allocation
-    fails, write a message to cout and terminate the program.
+  - Add a new public member function called at() that takes an index value and
+    returns a reference to the element being modify. at() can then be used to
+    either read from, or write to, any element in the array. Like this:
 
-  - a deep-copy copy constructor and destructor for handling the dynamic memory
-    management.
+         Array<int>  numbers(5);
 
-  - A set() function that will allow the caller to place an element value at a
-    specific index position in the array.
+         numbers.at(0)  =  7;   // stores 7 in the first element position
 
-  - A get() function that will allow the caller to fetch an element value from a
-    specific index position within the array.
+         cout  <<  numbers.at(5);   // displays contents of last index
+                                    // position
 
-  - A lowerBound() function which returns the index for of the lower bound
-    for the array.
+    Note: if at() is called for a SafeArray<> object, it should do bounds
+          checking. For Array<> objects it should not.
 
-  - Am upperBound() function which returns the index of the upper bound
-    for the array.
+    Do not eliminate the set() and get() member functions. These still need
+    to be in your Array and SafeArray classes. Their behavior does not
+    change from assignment #2.
 
-  - A numElements() function which returns the number of elements the array
-    can hold.
-
-  - A size() function which returns the number of bytes that were allocated
-    to hold all the elements.
-
-Here's some sample client calls to member functions for the Array objects created
-above (these assume the element type is int):
-
-      values.set(0, 21);
-        //
-        // Sets the first element in the "values" array to 21.
-        //
-
-      int  x = values.get(1);
-        //
-        // Fetches the value stored in the second element of the "values" array
-        // and stores it in the variable called x.
-        //
-
-      numbers.set(45, 3);
-        //
-        // Stores the value of 3 in the first element in the "numbers" array.
-        //
+  - Change the copying behavior of Array<> and SafeArray<> so that a
+    "shallow" copy is performed instead of a "deep" copy. You are to
+    use a reference counting class to accomplish this.
 
 
+Thing's I'm looking for:
 
-The SafeArray class
--------------------
-Create a class called SafeArray that provides all the same functionality
-as Array with the added behavior of providing index bounds checking when clients
-are setting/retrieving element values. The public interface for clients of
-SafeArray should be the same as Array. The behavior of the following member
-functions change:
+  - Everything I was looking for assignment #2 plus...
 
-  - All indexing into the array (for reading or writing elements) will have
-    bounds checking performed to ensure the index value is valid. Valid index
-    values are greater-than-or-equal-to the lower bound AND less-than-or-equal-to
-    the upper bound.
+  - Proper use of templates.
 
-  - The set() function will still allow the caller to place an element at
-    a specific index position in the array. If the index is out of range, the
-    function should write an error message to the cout stream and terminate
-    the program immediately.
+  - Proper use return-by-reference.
 
-  - The get() function will still allow the caller to fetch an element value
-    from a specific index position within the array. If the array index is
-    out of range, the function should write an error message to the cout
-    stream and terminate the program immediately.
-
-I'm expecting you to use inheritance for the implementation of the SafeArray class.
-
-
-
-A few of the thing's I'll be looking for in this assignment
------------------------------------------------------------
-
-  - Proper use of header/body files. Put the class declarations in a
-    header file (you can use one .h for both Array and SafeArray) and
-    the definitions in a .cpp file (one for both is okay here too).
-
-  - Proper use of encapsulation functionality (data member hiding/abstraction)
-
-  - Proper use of dynamic memory:
-      o  no memory leaks
-      o  a correct "deep-copy" copy constructor
-      o  checking for successful allocation
-      o  no wasted memory
-
-  - Proper use of inheritance. This includes:
-      o  hiding of parent data that the child class doesn't need access to.
-      o  chaining function calls by the child to eliminate the need for
-         duplicate functionality in parent and child classes.
-
-  - Proper const correct-ness for member functions.
-
-  - Complete use of a typedef for the element type, such that by only
-    changing the typedef and recompiling, the Array and SafeArray classes
-    should be able to used with an element type other than int.
-
-  - Use of member initialization in all constructors for the
-    parent and child classes.
-
-  - Good use of private member functions to modularize internal class functionality
-
-  - Effiecient use of member variables (ie. no redundent values).
+  - Proper use of copy constructors and reference counting
+    to achieve "shallow" copying behavior. Note: this includes
+    proper dynamic memory management so that there's no
+    memory leaks or excess memory used.
 
   - Good programming style (see the assignments web page for more information
     on style).
+
+
+What to send me:
+
+  Send me the source code files you implement for this project.
+
+  Here's a suggestion as to the possible source code files
+  you'll need to implement for this assignment:
+
+    array.h - template class declarations
+    array.inc - template class function bodies
+    refCounter.h - reference counting class declaration
+    refCounter.cpp - reference counting class implementation
+
+
+Testing recommendation:
+
+  THE most common problems I find with template assignments
+  can be identified by doing a thorough job of testing ALL
+  member functions for template classes with BOTH built-in and
+  user-defined data types. Don't fall victim to template
+  euphoria.

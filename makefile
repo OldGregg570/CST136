@@ -1,14 +1,19 @@
 CFLAGS 		= -g -Wall -std=c++0x -I./include/ -I./lib/
-CC 			= g++ $(CFLAGS)
-SRC_ARRAY    = ./src/array.cpp ./include/array.h
-SRC_ALL 	= $(SRC_ARRAY)
+CC 			= g++
+SRC_ARRAY   = ./src/array.cpp
+SRC_REFCNT	= ./src/refCounter.cpp ./include/refCounter.h
+SRC_ALL 	= $(SRC_ARRAY) $(SRC_REFCNT)
 
-test: array.o
-	$(CC) ./src/array.spec.cpp $(SRC_ALL) -o ./bin/test
+test: refCounter.o
+	$(CC) $(CFLAGS) ./src/array.spec.cpp $(SRC_REFCNT) -o ./bin/test
 	./bin/test
 
-array.o: $(SRC_ARRAY)
-	$(CC) -c $(SRC_ARRAY) -o ./bin/array.o
+h_test:
+	$(CC) $(CFLAGS) ./src/hoffman.test.cpp  $(SRC_REFCNT) -o ./bin/h_test
+	./bin/h_test
+
+refCounter.o: $(SRC_REFCNT)
+	$(CC) $(CFLAGS) -c $(SRC_REFCNT) -o ./bin/refCounter.o
 
 clean:
 	rm ./bin/*.o ./bin/*.exe ./*.exe -f
